@@ -17,46 +17,58 @@ package Figures;
 import java.util.ArrayList;
 
 abstract class Figures {
-    
 
-    // Variables 
-    ArrayList<Integer> coordinates;
-    ArrayList<Integer> distances;
-    ArrayList<Integer> vectors;
-
+    //======================== Variables ==========================    
+    ArrayList<float []> coordinates;
+    ArrayList<float []> distances;
+    ArrayList<float []> vectors;
     //This variable corresponds to the coordinates of the equation
     //or the position's data from the JSONs
-    ArrayList<Integer> raw_data;
+    ArrayList<float []> raw_data;
+    //=============================================================    
 
-    //Methods
+    //======================== Constructors =======================    
+    Figures(int value)
+    {
+        this.coordinates = setCoordinates(value);
+        this.distances = setDistances(coordinates);
+        this.vectors = setVectors(distances);
+    }
+
+    Figures()
+    {
+        this.coordinates = setCoordinatesFromData();
+        this.distances = setDistances(coordinates);
+        this.vectors = setVectors(distances);
+    }
+    //=============================================================    
+
     
-    //Trough a mathematical equation, we can get the coordinates
-    //For a example we can get a circle with: x² = y
-    //The method below takes a value (circle = radious, square = length of a side)
-    //and gives an array of coordinates from the equation
-    public abstract ArrayList<Integer> MakeCoordinates(int Value);
+    //======================== Methods ============================
+    protected abstract ArrayList<float []> setCoordinates(int Value);
 
     //This method take a json file with all the possible coordinates 
     //and makes an array 
-    public ArrayList<Integer> ExctractCoordinatesFromData(){
+    protected ArrayList<float []> setCoordinatesFromData(){
+        return null;
     }
 
-    public int ExtractData(){
+    protected int ExtractData(){
         return 0;
     }
 
-    public ArrayList<Integer> GetDistances(ArrayList<Integer> coordinates){
+    protected ArrayList<float []> setDistances (ArrayList<float []> coordinates){
         return distances;
     }
     
-    public ArrayList<Integer> GetVectors(ArrayList<Integer> distances){
+    protected ArrayList<float []> setVectors (ArrayList<float []> distances){
         return vectors;
     }
 
     //Given a vector, this function returns 
     //if it's a Cirle or a Saqure
     public void resolve(){
-
+       System.out.println(coordinates); 
     }
 
 }
