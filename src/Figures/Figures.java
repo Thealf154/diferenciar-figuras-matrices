@@ -12,25 +12,28 @@
 * 
 */
 
-package Figures;
-
+package Figures; 
 import java.util.ArrayList;
 
 abstract class Figures {
 
     //======================== Variables ==========================    
-    ArrayList<float []> coordinates;
-    ArrayList<float []> distances;
-    ArrayList<float []> vectors;
-    //This variable corresponds to the coordinates of the equation
-    //or the position's data from the JSONs
-    ArrayList<float []> raw_data;
+    protected ArrayList<float []> coordinates;
+    protected ArrayList<Float> distances;
+    protected ArrayList<float []> vectors;
     //=============================================================    
 
     //======================== Constructors =======================    
     Figures(int value)
     {
-        this.coordinates = setCoordinates(value);
+        this.coordinates = setCoordinates(value, 0f, 0f);
+        this.distances = setDistances(coordinates);
+        this.vectors = setVectors(distances);
+    }
+
+    Figures(int value, float center_x, float center_y)
+    {
+        this.coordinates = setCoordinates(value, center_x, center_y);
         this.distances = setDistances(coordinates);
         this.vectors = setVectors(distances);
     }
@@ -45,7 +48,7 @@ abstract class Figures {
 
     
     //======================== Methods ============================
-    protected abstract ArrayList<float []> setCoordinates(int Value);
+    protected abstract ArrayList<float []> setCoordinates(int Value, float center_x, float center_y);
 
     //This method take a json file with all the possible coordinates 
     //and makes an array 
@@ -53,15 +56,25 @@ abstract class Figures {
         return null;
     }
 
-    protected int ExtractData(){
-        return 0;
-    }
-
-    protected ArrayList<float []> setDistances (ArrayList<float []> coordinates){
-        return distances;
+    protected ArrayList<Float> setDistances (ArrayList<float []> coordinates){
+        ArrayList<Float> local_distances = new ArrayList<>();
+        float[] current_coordinates;
+        float calculated_distance ;
+        float y; float x;
+        for (int i = 0; i < coordinates.size(); i++)
+        {
+            current_coordinates = coordinates.get(i);
+            x = current_coordinates[0];
+            y = current_coordinates[1];
+            //We always calculate the distance between (0,0) and the other coordinates
+            //so, x1=0, y1=0. The final equation is: sqrt()
+            calculated_distance = (float) Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+            local_distances.add(calculated_distance);
+        }
+        return local_distances;
     }
     
-    protected ArrayList<float []> setVectors (ArrayList<float []> distances){
+    protected ArrayList<float []> setVectors (ArrayList<Float> distances){
         return vectors;
     }
 

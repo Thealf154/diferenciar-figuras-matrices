@@ -16,7 +16,7 @@ public class Circle extends Figures {
     // square = length of a side)
     //and gives an array of coordinates from the equation
     @Override
-    public ArrayList<float []> setCoordinates(int radius) {
+    public ArrayList<float []> setCoordinates(int radius, float center_x, float center_y) {
         float y;
         ArrayList<float []> coordinates = new ArrayList<>();
 

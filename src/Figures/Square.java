@@ -11,7 +11,7 @@ public class Square extends Figures{
     public Square (){}
 
     @Override
-    public ArrayList<float []> setCoordinates (int side) {
+    public ArrayList<float []> setCoordinates (int side, float center_x, float center_y) {
         float y;
         ArrayList<float []> coordinates = new ArrayList<>();
 
