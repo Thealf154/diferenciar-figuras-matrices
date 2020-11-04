@@ -75,13 +75,33 @@ abstract class Figures {
     }
     
     protected ArrayList<float []> setVectors (ArrayList<Float> distances){
+        ArrayList<float []> vectors = new ArrayList<>();
+        float firstDistance;
+        float secondDistance;
+        int originalDistancesSize; 
+        
+        originalDistancesSize = distances.size() - 1;
+
+        for(int i = 0; i <= originalDistancesSize; i++)
+        {
+            firstDistance = distances.get(i);
+            float[] row = new float[originalDistancesSize + 1];
+
+            for(int j = 0; j <= originalDistancesSize; j++)
+            {
+                secondDistance = distances.get(j);
+                float product = firstDistance * secondDistance;
+                row[j] = product;
+            }
+            vectors.add(row);
+        }
         return vectors;
     }
 
     //Given a vector, this function returns 
     //if it's a Cirle or a Saqure
     public void resolve(){
-       System.out.println(coordinates); 
+       System.out.println(vectors); 
     }
 
 }
