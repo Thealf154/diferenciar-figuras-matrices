@@ -7,8 +7,11 @@ public class Circle extends Figures {
     public Circle(int value) {
         super(value);
     }
+
+    public Circle(String fileName){
+        super(fileName);
+    }
     
-    public Circle (){}
 
     //Trough a mathematical equation, we can get the coordinates
     //For a example we can get a circle with: x² = y

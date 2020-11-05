@@ -8,7 +8,9 @@ public class Square extends Figures{
         super(side);
     }
 
-    public Square (){}
+    public Square (String fileName){
+        super(fileName);
+    }
 
     @Override
     public ArrayList<float []> setCoordinates (int side, float center_x, float center_y) {
