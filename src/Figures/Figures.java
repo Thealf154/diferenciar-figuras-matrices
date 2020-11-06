@@ -16,14 +16,18 @@ package Figures;
 
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
+import java.io.BufferedWriter;
 //This is to read the Json
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
+import java.io.FileWriter;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
-import java.util.Iterator; 
+import java.util.Iterator;
 
 
 abstract class Figures {
@@ -65,12 +69,11 @@ abstract class Figures {
     // and makes an array
     protected ArrayList<float[]> setCoordinatesFromData(String fileName) {
         ArrayList<float[]> finalCoordinates = new ArrayList<>();
-        JSONArray posx; 
+        JSONArray posx;
         JSONArray posy;
         JSONArray centerCoordinates;
         Iterator<?> itr1;
         Iterator<?> itr2;
-        Iterator<?> itr3;
 
         try {
             JSONParser jsonParser = new JSONParser();
@@ -89,14 +92,13 @@ abstract class Figures {
             this.centerX = (float) (double) centerCoordinates.get(0);
             this.centerY = (float) (double) centerCoordinates.get(1);
 
-            //Loop through all the values
+            // Loop through all the values
             itr1 = posx.iterator();
             itr2 = posy.iterator();
 
-            while(itr1.hasNext() && itr2.hasNext())
-            {
-               float [] localCoordinates = {(float) (Long) itr1.next(), (float) (Long) itr2.next()};
-               finalCoordinates.add(localCoordinates);
+            while (itr1.hasNext() && itr2.hasNext()) {
+                float[] localCoordinates = { (float) (Long) itr1.next(), (float) (Long) itr2.next() };
+                finalCoordinates.add(localCoordinates);
             }
             return finalCoordinates;
 
@@ -111,7 +113,7 @@ abstract class Figures {
         return null;
     }
 
-    protected ArrayList<Float> setDistances(ArrayList<float[]> coordinates, float centerY, float centerX) {
+    protected ArrayList<Float> setDistances(ArrayList<float[]> coordinates, float centerX, float centerY) {
         ArrayList<Float> local_distances = new ArrayList<>();
         float[] current_coordinates;
         float calculated_distance;
@@ -123,7 +125,7 @@ abstract class Figures {
             y = current_coordinates[1];
             // We always calculate the distance between (0,0) and the other coordinates
             // so, x1=0, y1=0. The final equation is: sqrt()
-            calculated_distance = (float) Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+            calculated_distance = (float) Math.sqrt(Math.pow(centerX - x, 2) + Math.pow(centerY - y, 2));
             local_distances.add(calculated_distance);
         }
         return local_distances;
@@ -151,10 +153,53 @@ abstract class Figures {
         return vectors;
     }
 
+    protected void makeCsv(ArrayList<float[]> valuesList, String fileName) {
+        int valuesListSize;
+        int currentVectorListSize;
+        float[] currentVectorList;
+        File csv;
+
+        valuesListSize = valuesList.size() - 1;
+
+        try {
+            // Preapring to Write the file
+            //This gets the current location of the project using a Canonical Path
+            String currentPath = new File(".").getCanonicalPath() + "/data/" + fileName + ".csv";
+            csv = new File(currentPath);
+            if (!csv.exists())
+                csv.createNewFile();
+            FileWriter fw = new FileWriter(csv, true);
+            // This is better for consecutive writings of small size
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            // Write all the data in the csv file
+            // Headers
+            for (int i = 0; i < valuesListSize; i++) 
+            {
+                currentVectorList = valuesList.get(i);
+                currentVectorListSize = currentVectorList.length - 1;
+                for (int j = 0; j < currentVectorListSize; j++) 
+                {
+                    float value = currentVectorList[j];
+                    if(currentVectorListSize == (j+1))
+                        bw.write(String.valueOf(value) + "\n");
+                    else{
+                        bw.write(String.valueOf(value) + ",");
+                    }
+                }
+            }
+            bw.close();
+            System.out.println("Vectores resultantes escritos en formato CSV"); 
+        } catch (IOException e) {
+            System.out.println("Un error pasó: " + e);
+        }
+
+    }
+
     // Given a vector, this function returns
     // if it's a Cirle or a Saqure
     public void resolve() {
-        System.out.println(vectors);
+        makeCsv(this.vectors, "vectors");
     }
 
 }
