@@ -68,9 +68,11 @@ abstract class Figures {
     // and makes an array
     protected ArrayList<float[]> setCoordinatesFromData(String fileName) {
         ArrayList<float[]> finalCoordinates = new ArrayList<>();
+        int count;
         JSONArray posx;
         JSONArray posy;
         JSONArray centerCoordinates;
+        String type;
         Iterator<?> itr1;
         Iterator<?> itr2;
 
@@ -88,16 +90,24 @@ abstract class Figures {
 
             // Get the center
             centerCoordinates = ((JSONArray) json.get("center"));
-            this.centerX = (float) (double) centerCoordinates.get(0);
-            this.centerY = (float) (double) centerCoordinates.get(1);
+            type = centerCoordinates.get(0).getClass().getName();
+            if(type == "long"){
+                this.centerX = (float) (double) centerCoordinates.get(0);
+                this.centerY = (float) (double) centerCoordinates.get(1);
+            }
+            else if(type == "double"){
+                this.centerX = (float) (long) centerCoordinates.get(0);
+                this.centerY = (float) (long) centerCoordinates.get(1);
+            }
 
             // Loop through all the values
             itr1 = posx.iterator();
             itr2 = posy.iterator();
-
-            while (itr1.hasNext() && itr2.hasNext()) {
+            count = 0;
+            while (itr1.hasNext() && itr2.hasNext() && (count < 20)) {
                 float[] localCoordinates = { (float) (Long) itr1.next(), (float) (Long) itr2.next() };
                 finalCoordinates.add(localCoordinates);
+                count++;
             }
             return finalCoordinates;
 
@@ -198,7 +208,10 @@ abstract class Figures {
     // Given a vector, this function returns
     // if it's a Cirle or a Saqure
     public void resolve() {
-        makeCsv(this.vectors, "vectors");
+        int vectorSize;
+        float diference;
+        makeCsv(this.vectors, "circle");
+        vectorSize = this.vectors.size() - 1;
     }
 
 }
