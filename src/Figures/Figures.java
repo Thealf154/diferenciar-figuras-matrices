@@ -197,7 +197,7 @@ abstract class Figures {
                     }
                 }
             }
-            bw.close();
+          bw.close();
             System.out.println("Vectores resultantes escritos en formato CSV"); 
         } catch (IOException e) {
             System.out.println("Un error pasó: " + e);
@@ -208,10 +208,20 @@ abstract class Figures {
     // Given a vector, this function returns
     // if it's a Cirle or a Saqure
     public void resolve() {
-        int vectorSize;
-        float diference;
-        makeCsv(this.vectors, "circle");
-        vectorSize = this.vectors.size() - 1;
+        float firstDiference;
+        float secondDiference;
+        float percentageDiference;
+
+        firstDiference = this.vectors.get(0)[1] - this.vectors.get(0)[0];
+        secondDiference = this.vectors.get(0)[2] - this.vectors.get(0)[1];
+
+        percentageDiference = (secondDiference * 100) / firstDiference;
+
+        if(percentageDiference > 101)
+            System.out.println("Es un cuadrado");
+        else
+            System.out.println("Es un circulo");
+
     }
 
 }
