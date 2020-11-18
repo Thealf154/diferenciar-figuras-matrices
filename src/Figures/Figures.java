@@ -215,6 +215,8 @@ abstract class Figures {
         firstDiference = this.vectors.get(0)[1] - this.vectors.get(0)[0];
         secondDiference = this.vectors.get(0)[2] - this.vectors.get(0)[1];
 
+        makeCsv(this.vectors, "vectors");
+
         percentageDiference = (secondDiference * 100) / firstDiference;
 
         if(percentageDiference > 101)
